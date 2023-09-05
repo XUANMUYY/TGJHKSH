@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js"
 import {Lensflare, LensflareElement} from 'three/addons/objects/Lensflare.js'
 import {TGTools} from './TGTools.atmospherematerial.js'
-import {GUI} from "three/addons/libs/lil-gui.module.min.js";
+// import {GUI} from "three/addons/libs/lil-gui.module.min.js";
 import {gsap} from "gsap";
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -14,8 +14,12 @@ import {CopyShader} from "three/addons/shaders/CopyShader.js";
 
 let EarthRadius = 250;
 let EarthSegments = 50;
-let VIEW_HEIGHT = window.innerHeight;
-let VIEW_WIDTH = window.innerWidth;
+// {
+//     let VIEW_HEIGHT = window.innerHeight;
+//     let VIEW_WIDTH = window.innerWidth;
+// }
+let VIEW_HEIGHT = document.getElementById('MainScene').clientHeight;
+let VIEW_WIDTH = document.getElementById('MainScene').clientWidth;
 
 let SpaceHtmlContainer;
 
@@ -62,7 +66,7 @@ let imagesLoaded = [], diffuseTextures = [], flareTextures = [], earthTextures =
     guiTextures = [];
 let sunTexture;
 
-let then;
+let then,DocSpace,DocPlain;
 
 let LoadFinished = false;
 let Mode = "Space";
@@ -74,6 +78,8 @@ loading();
 function initData() {
     path = "../textures/MainTexture/";
     guiPath = "../img/gui/";
+    DocSpace = document.getElementById('Space');
+    DocPlain = document.getElementById('Plain');
 }
 
 function initLoader() {
@@ -175,33 +181,7 @@ function initLoader() {
             }
         }
 
-        document.getElementById('loadingScreen').remove();
-        gsap.to(document.getElementById('loadingScreen'), {
-            duration: 0.6,
-            onComplete: function () {
-                //document.getElementById('loadingScreen').remove();
-                gsap.to( [ hblur.uniforms[ "h" ], vblur.uniforms[ "v" ] ], {
-                    duration: 2.0,
-                    value: 0.0 / 512,
-                    delay: 0.5,
-                    ease: "Linear.easeNone",
-                } );
-                gsap.to( vignettePass.uniforms[ "offset" ],  {
-                    duration: 2.0,
-                    value: 0.0,
-                    delay: 0.5,
-                    ease: "Cubic.easeOut",
-                    onComplete: function () {
-                        LoadFinished = true;
-                    }
-                } );
-            }
-        })
-
-        //模式判断
-        if (Mode==="Space"){
-            SpaceMode();
-        }
+        LoadComplete();
     }
 }
 
@@ -231,6 +211,49 @@ function loading() {
     }, false)
 }
 
+function LoadComplete(){
+    document.getElementById('loadingScreen').remove();
+    gsap.to(document.getElementById('loadingScreen'), {
+        duration: 0.6,
+        onComplete: function () {
+            //document.getElementById('loadingScreen').remove();
+            gsap.to( [ hblur.uniforms[ "h" ], vblur.uniforms[ "v" ] ], {
+                duration: 2.0,
+                value: 0.0 / 512,
+                delay: 0.5,
+                ease: "Linear.easeNone",
+            } );
+            gsap.to( vignettePass.uniforms[ "offset" ],  {
+                duration: 2.0,
+                value: 0.0,
+                delay: 0.5,
+                ease: "Cubic.easeOut",
+                onComplete: function () {
+                    LoadFinished = true;
+                }
+            } );
+        }
+    })
+
+    {
+        DocPlain.addEventListener("click", function () {
+            DocPlain.classList.add('TopMenuSwitchItem-Active');
+            DocSpace.classList.remove('TopMenuSwitchItem-Active');
+            Mode = "Plain";
+        });
+        DocSpace.addEventListener("click", function () {
+            DocPlain.classList.remove('TopMenuSwitchItem-Active');
+            DocSpace.classList.add('TopMenuSwitchItem-Active');
+            Mode = "Space";
+        });
+    }
+
+    //模式判断
+    if (Mode==="Space"){
+        SpaceMode();
+    }
+}
+
 function SpaceMode() {
     SpaceInitRenderer();
     SpaceInitCamera();
@@ -253,7 +276,7 @@ function SpaceInitRenderer() {
     {
         SpaceHtmlContainer = renderer.domElement;
         SpaceHtmlContainer.id = "SpaceHtmlContainer";
-        document.body.appendChild(SpaceHtmlContainer);
+        document.getElementById('MainScene').appendChild(SpaceHtmlContainer);
     }
 }
 
@@ -425,7 +448,7 @@ function SpaceInitSystem(){
     EarthSystem = new THREE.Object3D();
 
     {
-        EarthSystem.add(Earth);
+        scene.add(Earth);
         EarthSystem.add(Moon)
     }
 
@@ -434,6 +457,16 @@ function SpaceInitSystem(){
     }
     scene.add(SolarSystem);
     scene.add(EarthSystem);
+
+    {
+        EarthSystem.rotation.xinit = 0 ;
+        EarthSystem.rotation.xspeed = 0;
+        EarthSystem.rotation.yinit = 0 ;
+        EarthSystem.rotation.yspeed = 0.1;
+        EarthSystem.rotation.zinit = 0 ;
+        EarthSystem.rotation.zspeed = 0;
+        CtrlRotation.push(EarthSystem);
+    }
 }
 
 // TODO 提高天空盒中星空贴图亮度

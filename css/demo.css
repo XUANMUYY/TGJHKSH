@@ -1,0 +1,127 @@
+#Main {
+    position: absolute;
+    width : 100%;
+    height : 100%;
+    z-index: 0;
+    background-color: black;
+}
+
+#TopMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 10;
+    background-image: linear-gradient(180deg, #000, transparent);
+}
+
+#TopMenuLogo {
+    position: absolute;
+    left: 50px;
+    top: 25px;
+    z-index: 20;
+    transform: translateZ(555.5rem);
+}
+
+#TopMenuSwitchContainer {
+    position: absolute;
+    display: inline-block;
+    justify-content: flex-start;
+    width: 200px;
+    height: 40px;
+    right: 50px;
+    top: 15px;
+    pointer-events: none;
+    border-radius: 20px;
+    border: 2px solid rgba(0, 167, 255, .8);
+    background-color: #000;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.14;
+    margin-right: 64px;
+    transition: border .2s;
+    align-items: center;
+    z-index: 20;
+}
+
+#Logo {
+    background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='212' height='42' viewBox='0 0 212 42'%3e%3ctext x='0' y='30' font-family='Arial' font-size='30' fill='%23fff'%3eTGJH%3c/text%3e%3c/svg%3e") no-repeat scroll 0 0;
+    background-size: auto 100%;
+    font-size: 2.556rem;
+    width: 13rem;
+    height: 2.556rem;
+    display: block;
+    float: left;
+}
+
+#TopMenuSwitch {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.TopMenuSwitchItem {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 167, 255, .3);
+    flex: 1 1 0;
+    text-transform: uppercase;
+    transition: color .2s;
+    pointer-events: all;
+    user-select: none;
+    cursor: pointer;
+}
+
+.TopMenuSwitchItem:hover {
+    color: #00a7ff;
+}
+
+.TopMenuSwitchItem-Active {
+    border-radius: 20px;
+    background-color: rgba(0, 167, 255, .3);
+    color: #00a7ff;
+    pointer-events: none;
+}
+
+#RightViewer {
+    padding-left: 25px;
+    box-sizing: border-box;
+    border-left: 1px solid hsla(0, 0%, 100%, .14);
+    position: absolute;
+    right: 50px;
+    top: 100px;
+    bottom: 0;
+    width: 250px;
+    z-index: 10
+}
+
+#MainScene {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    right: 320px;
+    bottom: 20px;
+    z-index: 10;
+}
+
+#SpaceHtmlContainer{
+    position : absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.RightViewItem{
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    color: #00a7ff;
+    text-transform: uppercase;
+    transition: color .2s;
+}
