@@ -248,6 +248,20 @@ function LoadComplete(){
         });
     }
 
+    {
+        document.getElementById('SwitchRightViewer').addEventListener('click',function (){
+            if(document.getElementById('SwitchRightViewer').classList.contains('OpenRightViewer')){
+                document.getElementById('RightViewer').style.height = '0' ;
+                document.getElementById('SwitchRightViewer').classList.remove('OpenRightViewer');
+                document.getElementById('SwitchRightViewer').classList.add('CloseRightViewer');
+            }else if (document.getElementById('SwitchRightViewer').classList.contains('CloseRightViewer')){
+                document.getElementById('RightViewer').style.height = '100%';
+                document.getElementById('SwitchRightViewer').classList.remove('CloseRightViewer');
+                document.getElementById('SwitchRightViewer').classList.add('OpenRightViewer');
+            }
+        })
+    }
+
     //模式判断
     if (Mode==="Space"){
         SpaceMode();
